@@ -63,6 +63,7 @@
               <small class="text-muted">
                 <strong>Usuários de teste:</strong><br>
                 Admin: admin@exemplo.com / 123456<br>
+                Gerente: gerente@exemplo.com / 123456<br>
                 Usuário: usuario@exemplo.com / 123456
               </small>
             </div>

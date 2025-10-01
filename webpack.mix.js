@@ -5,8 +5,5 @@ mix.js('resources/js/app.js', 'public/js')
    .sass('resources/css/app.scss', 'public/css')
    .options({
        processCssUrls: false
-   });
-
-if (mix.inProduction()) {
-    mix.version();
-}
+   })
+   .version();

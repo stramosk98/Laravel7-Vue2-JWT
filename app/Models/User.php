@@ -10,8 +10,12 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    public const ADMIN_TYPE = 1;
+    public const LOGISTICS_MANAGER_TYPE = 2;
+    public const USER_TYPE = 3;
+
     protected $fillable = [
-        'name', 'email', 'password', 'api_token',
+        'name', 'email', 'password', 'api_token', 'role_id',
     ];
 
     protected $hidden = [
@@ -31,5 +35,25 @@ class User extends Authenticatable
         $this->save();
 
         return $this->api_token;
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role->id === self::ADMIN_TYPE;
+    }
+
+    public function isLogisticsManager()
+    {
+        return $this->role->id === self::LOGISTICS_MANAGER_TYPE;
+    }
+
+    public function isUser()
+    {
+        return $this->role->id === self::USER_TYPE;
     }
 }
