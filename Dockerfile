@@ -29,6 +29,13 @@ RUN npm install --include=dev
 # Copy application code
 COPY . .
 
+# Create required Laravel storage directories
+RUN mkdir -p storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/framework/testing \
+    storage/app/public
+
 # Fix permissions and generate optimized autoloader
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache \
