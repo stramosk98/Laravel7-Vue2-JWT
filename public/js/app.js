@@ -2165,7 +2165,7 @@ var staticRenderFns = [function () {
     staticClass: "text-center"
   }, [_c("small", {
     staticClass: "text-muted"
-  }, [_c("strong", [_vm._v("Usuários de teste:")]), _c("br"), _vm._v("\n              Admin: admin@exemplo.com / 123456"), _c("br"), _vm._v("\n              Usuário: usuario@exemplo.com / 123456\n            ")])]);
+  }, [_c("strong", [_vm._v("Usuários de teste:")]), _c("br"), _vm._v("\n              Admin: admin@exemplo.com / 123456"), _c("br"), _vm._v("\n              Gerente: gerente@exemplo.com / 123456"), _c("br"), _vm._v("\n              Usuário: usuario@exemplo.com / 123456\n            ")])]);
 }];
 render._withStripped = true;
 
