@@ -15,7 +15,7 @@ return [
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
-            'hash' => true,
+            'hash' => false,
             'storage_key' => 'api_token',
         ],
     ],
