@@ -75,6 +75,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'LoginComponent',
   data() {
@@ -97,11 +99,11 @@ export default {
       this.errors = {};
       
       try {
-        const response = await this.$http.post('/login', this.form);
+        const response = await axios.post('/login', this.form);
         
         if (response.data.token) {
           localStorage.setItem('auth_token', response.data.token);
-          this.$http.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+          axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
           this.$parent.user = response.data.user;
           this.message = response.data.message;
           

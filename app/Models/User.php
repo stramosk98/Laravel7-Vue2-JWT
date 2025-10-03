@@ -31,7 +31,7 @@ class User extends Authenticatable
      */
     public function generateApiToken()
     {
-        $this->api_token = hash('sha256', \Illuminate\Support\Str::random(60));
+        $this->api_token = \Illuminate\Support\Str::random(60);
         $this->save();
 
         return $this->api_token;
@@ -40,6 +40,22 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function permissions()
+    {
+        return $this->HasManyThrough(Permission::class, RolePermission::class, 'role_id', 'id', 'role_id', 'permission_id');
+    }
+
+    public function hasPermission($permissionName)
+    {
+        if (!$this->role) {
+            return false;
+        }
+
+        return $this->role->permissions()
+            ->where('name', $permissionName)
+            ->exists();
     }
 
     public function isAdmin()

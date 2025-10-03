@@ -10,6 +10,11 @@ use App\Models\User;
 
 class LoginController extends Controller
 {
+    public function showLoginForm()
+    {
+        return view('app');
+    }
+
     public function login(Request $request)
     {
         $request->validate([
@@ -22,9 +27,11 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $token = $user->generateApiToken();
+            
+            $userWithPermissions = User::with('permissions')->find($user->id);
 
             return response()->json([
-                'user' => $user,
+                'user' => $userWithPermissions,
                 'token' => $token,
                 'message' => 'Login realizado com sucesso!'
             ]);
@@ -49,6 +56,7 @@ class LoginController extends Controller
 
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        $user = User::with('permissions')->find($request->user()->id);
+        return response()->json($user);
     }
 }
