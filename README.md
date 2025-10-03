@@ -10,6 +10,34 @@ Um projeto simples com autenticação usando Laravel 7, Vue 2 e MySQL, totalment
 - **Containerização**: Docker e Docker Compose
 - **Estilo**: Bootstrap 4
 
+### Backend
+
+- Utilizei `api_token` armazenado no banco de dados para autenticação stateless
+- Sistema de controle de acesso baseado em roles e permissões
+- Middleware customizado `CheckPermission` para verificação de permissões
+- Estrutura: User → Role → Permissions (muitos-para-muitos)
+
+- `OrderService` separa lógica de negócio dos controllers
+- Controllers focados apenas em receber requisições e retornar respostas
+- Não utilizei Repository por não achar que era necessário
+
+- `OrderRequest` centraliza regras de validação
+- Separação de responsabilidades: validação fora dos controllers
+- Mensagens de erro padronizadas
+
+- Método `scopeFilter()` no model Order para filtrar
+
+### Frontend
+
+- Guards para proteção de rotas
+- Adicionado token automaticamente em todas requisições
+- tratado erros 401 (não autenticado) e 403 (sem permissão) globalmente com redirecionamento automático
+- Persistência do token de autenticação entre sessões
+
+### Infraestrutura
+
+- Separação em 3 serviços: app (Laravel+Apache), db (MySQL), phpmyadmin
+
 ## Instalação
 
 ### 1. Clone o Projeto
