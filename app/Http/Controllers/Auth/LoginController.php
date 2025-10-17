@@ -24,15 +24,15 @@ class LoginController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = $user->generateApiToken();
-            
+        if ($token = auth('api')->attempt($credentials)) {
+            $user = auth('api')->user();
             $userWithPermissions = User::with('permissions')->find($user->id);
 
             return response()->json([
                 'user' => $userWithPermissions,
-                'token' => $token,
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth('api')->factory()->getTTL() * 60,
                 'message' => 'Login realizado com sucesso!'
             ]);
         }
@@ -44,10 +44,7 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        if ($request->user()) {
-            $request->user()->api_token = null;
-            $request->user()->save();
-        }
+        auth('api')->logout();
 
         return response()->json([
             'message' => 'Logout realizado com sucesso!'
@@ -56,7 +53,19 @@ class LoginController extends Controller
 
     public function user(Request $request)
     {
-        $user = User::with('permissions')->find($request->user()->id);
+        $user = User::with('permissions')->find(auth('api')->user()->id);
         return response()->json($user);
+    }
+
+    public function refresh()
+    {
+        $token = auth('api')->refresh();
+        
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'message' => 'Token renovado com sucesso!'
+        ]);
     }
 }

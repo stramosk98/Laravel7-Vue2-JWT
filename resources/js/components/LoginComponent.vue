@@ -101,9 +101,9 @@ export default {
       try {
         const response = await axios.post('/login', this.form);
         
-        if (response.data.token) {
-          localStorage.setItem('auth_token', response.data.token);
-          axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+        if (response.data.access_token) {
+          localStorage.setItem('auth_token', response.data.access_token);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`;
           this.$parent.user = response.data.user;
           this.message = response.data.message;
           

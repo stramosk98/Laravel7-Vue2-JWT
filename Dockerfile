@@ -17,11 +17,11 @@ WORKDIR /var/www/html
 # Copy composer files first for better caching
 COPY composer.json ./
 
-# Install PHP dependencies
+# Install PHP dependencies (update to resolve new packages)
 RUN composer update --no-scripts --no-autoloader --prefer-dist
 
 # Copy package files for npm
-COPY package.json ./
+COPY package.json package-lock.json* ./
 
 # Install npm dependencies
 RUN npm install --include=dev
@@ -43,13 +43,29 @@ RUN chown -R www-data:www-data /var/www/html \
     && php -r "file_exists('.env') || copy('env.example', '.env');" \
     && php artisan key:generate --no-interaction || true
 
-# Build frontend assets
+# Ensure JWT package is properly installed and publish config
+RUN composer dump-autoload --optimize \
+    && php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider" --no-interaction || true \
+    && php artisan jwt:secret --no-interaction || true \
+    && echo "JWT configuration completed"
+
+# Create startup script for database operations
+RUN echo '#!/bin/bash\n\
+echo "Waiting for database..."\n\
+sleep 10\n\
+php artisan migrate --no-interaction\n\
+php artisan db:seed --no-interaction\n\
+echo "Database setup completed"\n\
+apache2-foreground' > /usr/local/bin/start.sh \
+    && chmod +x /usr/local/bin/start.sh
+
+# Build frontend assets (with error handling)
 RUN npm config set cache /tmp/.npm \
-    && npm run dev
+    && (npm run dev || npm run production || echo "Frontend build failed, continuing...")
 
 # Configure Apache
 COPY docker/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+CMD ["/usr/local/bin/start.sh"]

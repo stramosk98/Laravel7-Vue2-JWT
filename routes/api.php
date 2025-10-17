@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 // Authentication routes
 Route::post('login', 'Auth\LoginController@login');
+Route::post('refresh', 'Auth\LoginController@refresh');
 
 // Protected routes
 Route::middleware('auth:api')->group(function () {

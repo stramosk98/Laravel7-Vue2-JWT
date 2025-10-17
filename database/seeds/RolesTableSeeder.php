@@ -7,19 +7,19 @@ class RolesTableSeeder extends Seeder
 {
     public function run()
     {
-        Role::create([
-            'name' => 'Administrador',
-            'description' => 'Administrador do sistema',
-        ]);
+        Role::firstOrCreate(
+            ['name' => 'Administrador'],
+            ['description' => 'Administrador do sistema']
+        );
 
-        Role::create([
-            'name' => 'Gerente de Logística',
-            'description' => 'Gerencia pedidos',
-        ]);
+        Role::firstOrCreate(
+            ['name' => 'Gerente de Logística'],
+            ['description' => 'Gerencia pedidos']
+        );
 
-        Role::create([
-            'name' => 'Usuário',
-            'description' => 'Usuário comum',
-        ]);
+        Role::firstOrCreate(
+            ['name' => 'Usuário'],
+            ['description' => 'Usuário comum']
+        );
     }
 }

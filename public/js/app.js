@@ -1934,9 +1934,9 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               return axios__WEBPACK_IMPORTED_MODULE_0___default().post('/login', _this.form);
             case 2:
               response = _context.v;
-              if (response.data.token) {
-                localStorage.setItem('auth_token', response.data.token);
-                (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults).headers.common['Authorization'] = "Bearer ".concat(response.data.token);
+              if (response.data.access_token) {
+                localStorage.setItem('auth_token', response.data.access_token);
+                (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults).headers.common['Authorization'] = "Bearer ".concat(response.data.access_token);
                 _this.$parent.user = response.data.user;
                 _this.message = response.data.message;
                 setTimeout(function () {

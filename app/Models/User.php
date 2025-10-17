@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
@@ -15,26 +16,33 @@ class User extends Authenticatable
     public const USER_TYPE = 3;
 
     protected $fillable = [
-        'name', 'email', 'password', 'api_token', 'role_id',
+        'name', 'email', 'password', 'role_id',
     ];
 
     protected $hidden = [
-        'password', 'remember_token', 'api_token',
+        'password', 'remember_token',
     ];
 
     protected $casts = [];
 
     /**
-     * Generate a new API token for the user.
+     * Get the identifier that will be stored in the subject claim of the JWT.
      *
-     * @return string
+     * @return mixed
      */
-    public function generateApiToken()
+    public function getJWTIdentifier()
     {
-        $this->api_token = \Illuminate\Support\Str::random(60);
-        $this->save();
+        return $this->getKey();
+    }
 
-        return $this->api_token;
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 
     public function role()

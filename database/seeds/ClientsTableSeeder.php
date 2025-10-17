@@ -12,44 +12,54 @@ class ClientsTableSeeder extends Seeder
      */
     public function run()
     {
-        Client::create([
-            'name' => 'Cliente 1',
-            'email' => 'cliente1@exemplo.com',
-            'phone' => '1234567890',
-            'city' => 'São Paulo',
-            'state' => 'SP',
-        ]);
+        Client::firstOrCreate(
+            ['email' => 'cliente1@exemplo.com'],
+            [
+                'name' => 'Cliente 1',
+                'phone' => '1234567890',
+                'city' => 'São Paulo',
+                'state' => 'SP',
+            ]
+        );
 
-        Client::create([
-            'name' => 'Cliente 2',
-            'email' => 'cliente2@exemplo.com',
-            'phone' => '1234567890',
-            'city' => 'Rio de Janeiro',
-            'state' => 'RJ',
-        ]);
+        Client::firstOrCreate(
+            ['email' => 'cliente2@exemplo.com'],
+            [
+                'name' => 'Cliente 2',
+                'phone' => '1234567890',
+                'city' => 'Rio de Janeiro',
+                'state' => 'RJ',
+            ]
+        );
 
-        Client::create([
-            'name' => 'Cliente 3',
-            'email' => 'cliente3@exemplo.com',
-            'phone' => '1234567890',
-            'city' => 'Santa Catarina',
-            'state' => 'SC',
-        ]);
+        Client::firstOrCreate(
+            ['email' => 'cliente3@exemplo.com'],
+            [
+                'name' => 'Cliente 3',
+                'phone' => '1234567890',
+                'city' => 'Santa Catarina',
+                'state' => 'SC',
+            ]
+        );
 
-        Client::create([
-            'name' => 'Cliente 4',
-            'email' => 'cliente4@exemplo.com',
-            'phone' => '1234567890',
-            'city' => 'Paraná',
-            'state' => 'PR',
-        ]);
+        Client::firstOrCreate(
+            ['email' => 'cliente4@exemplo.com'],
+            [
+                'name' => 'Cliente 4',
+                'phone' => '1234567890',
+                'city' => 'Paraná',
+                'state' => 'PR',
+            ]
+        );
 
-        Client::create([
-            'name' => 'Cliente 5',
-            'email' => 'cliente5@exemplo.com',
-            'phone' => '1234567890',
-            'city' => 'Bahia',
-            'state' => 'BA',
-        ]);
+        Client::firstOrCreate(
+            ['email' => 'cliente5@exemplo.com'],
+            [
+                'name' => 'Cliente 5',
+                'phone' => '1234567890',
+                'city' => 'Bahia',
+                'state' => 'BA',
+            ]
+        );
     }
 }

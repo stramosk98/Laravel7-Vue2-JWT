@@ -7,22 +7,22 @@ class RolePermissionsTableSeeder extends Seeder
 {
     public function run()
     {
-        RolePermission::create([
+        RolePermission::firstOrCreate([
             'role_id' => 2,
             'permission_id' => 1,
         ]);
 
-        RolePermission::create([
+        RolePermission::firstOrCreate([
             'role_id' => 2,
             'permission_id' => 2,
         ]);
 
-        RolePermission::create([
+        RolePermission::firstOrCreate([
             'role_id' => 2,
             'permission_id' => 3,
         ]);
         
-        RolePermission::create([
+        RolePermission::firstOrCreate([
             'role_id' => 2,
             'permission_id' => 4,
         ]);

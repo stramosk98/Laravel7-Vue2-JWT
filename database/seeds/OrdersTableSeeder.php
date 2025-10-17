@@ -12,21 +12,24 @@ class OrdersTableSeeder extends Seeder
      */
     public function run()
     {
-        Order::create([
+        Order::firstOrCreate([
             'client_id' => 1,
             'address' => 'Rua Lauro moura',
+        ], [
             'status' => 1,
         ]);
 
-        Order::create([
+        Order::firstOrCreate([
             'client_id' => 2,
             'address' => 'Rua João Rodrigues',
+        ], [
             'status' => 1,
         ]);
 
-        Order::create([
+        Order::firstOrCreate([
             'client_id' => 3,
             'address' => 'Rua 15 de Novembro',
+        ], [
             'status' => 1,
         ]);
     }

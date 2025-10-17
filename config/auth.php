@@ -13,10 +13,8 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'jwt',
             'provider' => 'users',
-            'hash' => false,
-            'storage_key' => 'api_token',
         ],
     ],
 
