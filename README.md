@@ -1,21 +1,24 @@
-# Laravel 7 + Vue 2 + MySQL - Sistema de Orders
+# Laravel 7 e Vue 2 com autenticação JWT
 
 Um projeto simples com autenticação usando Laravel 7, Vue 2 e MySQL, totalmente dockerizado.
 
 ## Características
 
-- **Backend**: Laravel 7.30+ com autenticação API
+- **Backend**: Laravel 7.30+ com autenticação JWT
 - **Frontend**: Vue 2 com Vue Router
 - **Banco de Dados**: MySQL 5.7
 - **Containerização**: Docker e Docker Compose
 - **Estilo**: Bootstrap 4
+- **Autenticação**: JWT (JSON Web Tokens) com refresh token
 
 ### Backend
 
-- Utilizei `api_token` armazenado no banco de dados para autenticação stateless
-- Sistema de controle de acesso baseado em roles e permissões
-- Middleware customizado `CheckPermission` para verificação de permissões
-- Estrutura: User → Role → Permissions (muitos-para-muitos)
+- **JWT Authentication**: Tokens stateless usando `tymon/jwt-auth`
+- **Token Refresh**: Sistema de renovação automática de tokens
+- **Sistema de Roles**: Controle de acesso baseado em roles e permissões
+- **Middleware**: `CheckPermission` para verificação de permissões
+- **Estrutura**: User → Role → Permissions (muitos-para-muitos)
+- **Híbrido**: Sessões para web + JWT para API
 
 - `OrderService` para que o controller foque em receber apenas requisições e retornar respostas
 - Não utilizei Repository por não achar que era necessário
@@ -26,10 +29,11 @@ Um projeto simples com autenticação usando Laravel 7, Vue 2 e MySQL, totalment
 
 ### Frontend
 
-- Guards para proteção de rotas
-- Adicionado token automaticamente em todas requisições
-- tratado erros 401 (não autenticado) e 403 (sem permissão) globalmente com redirecionamento automático
-- Persistência do token de autenticação entre sessões
+- **Route Guards**: Proteção automática de rotas
+- **JWT Integration**: Token JWT adicionado automaticamente em todas requisições
+- **Error Handling**: Tratamento global de erros 401/403 com redirecionamento
+- **Token Persistence**: Armazenamento seguro do token no localStorage
+- **Auto Refresh**: Renovação automática de tokens expirados
 
 ### Infraestrutura
 
@@ -79,7 +83,7 @@ docker exec laravel-simple-app php artisan db:seed
 docker exec laravel-simple-app npm run dev
 ```
 
-> **Nota**: As dependências PHP e JavaScript já são instaladas durante o build do Docker.
+> **Nota**: As dependências PHP e JavaScript já são instaladas durante o build do Docker. O JWT é configurado automaticamente.
 
 ## Acesso
 
@@ -89,10 +93,11 @@ docker exec laravel-simple-app npm run dev
 
 ## Usuários de Teste
 
-O sistema vem com dois usuários pré-configurados:
+O sistema vem com usuários pré-configurados:
 
-- **Admin**: admin@exemplo.com / 123456
-- **Usuário**: usuario@exemplo.com / 123456
+- **Administrador**: admin@exemplo.com / 123456
+- **Gerente de Logística**: gerente@exemplo.com / 123456  
+- **Usuário Comum**: usuario@exemplo.com / 123456
 
 ## Comandos Úteis
 
@@ -113,20 +118,31 @@ docker exec laravel-simple-app npm run dev
 docker exec laravel-simple-app php artisan cache:clear
 ```
 
-## Como Funciona a Autenticação
+## Autenticação JWT
+
+### Como Funciona
 
 1. **Login**: Usuário envia credenciais para `/api/login`
-2. **Token**: Sistema gera um token único para o usuário
+2. **JWT Token**: Sistema gera um token JWT com expiração de 1 hora
 3. **Armazenamento**: Token é salvo no localStorage do navegador
 4. **Proteção**: Rotas protegidas verificam o token via middleware `auth:api`
-5. **Logout**: Token é removido do banco e do localStorage
+5. **Refresh**: Token pode ser renovado via `/api/refresh`
+6. **Logout**: Token é invalidado e removido do localStorage
+
+### Configuração JWT
+
+- **Driver**: `jwt` no guard `api`
+- **TTL**: 60 minutos (configurável)
+- **Refresh TTL**: 2 semanas
+- **Algoritmo**: HS256
+- **Secret**: Gerado automaticamente no Docker build
 
 ## Frontend (Vue 2)
 
-- **LoginComponent**: Tela de login com validação
+- **LoginComponent**: Tela de login com validação JWT
 - **DashboardComponent**: Painel do usuário autenticado
-- **Vue Router**: Navegação entre páginas
-- **Axios**: Requisições HTTP para a API
+- **Vue Router**: Navegação entre páginas com guards
+- **Axios**: Requisições HTTP com interceptors JWT
 - **Bootstrap 4**: Interface responsiva
 
 ## Desenvolvimento
