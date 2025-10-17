@@ -44,8 +44,8 @@ Um projeto simples com autenticação usando Laravel 7, Vue 2 e MySQL, totalment
 ### 1. Clone o Projeto
 
 ```bash
-git clone https://github.com/stramosk98/BoxLog-Test.git
-cd BoxLog-Test
+git clone https://github.com/stramosk98/Laravel7-Vue2-JWT.git
+cd Laravel7-Vue2-JWT
 ```
 
 ### 2. Configure o Ambiente
