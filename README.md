@@ -17,13 +17,10 @@ Um projeto simples com autenticação usando Laravel 7, Vue 2 e MySQL, totalment
 - Middleware customizado `CheckPermission` para verificação de permissões
 - Estrutura: User → Role → Permissions (muitos-para-muitos)
 
-- `OrderService` separa lógica de negócio dos controllers
-- Controllers focados apenas em receber requisições e retornar respostas
+- `OrderService` para que o controller foque em receber apenas requisições e retornar respostas
 - Não utilizei Repository por não achar que era necessário
 
-- `OrderRequest` centraliza regras de validação
-- Separação de responsabilidades: validação fora dos controllers
-- Mensagens de erro padronizadas
+- `OrderRequest` centraliza regras de validação com mensagens de erro padronizadas, separando responsabilidades já que valida fora do controller
 
 - Método `scopeFilter()` no model Order para filtrar
 
@@ -163,3 +160,4 @@ docker exec laravel-simple-app npm run dev
 docker exec laravel-simple-app chown -R www-data:www-data storage bootstrap/cache
 docker exec laravel-simple-app chmod -R 775 storage bootstrap/cache
 ```
+
